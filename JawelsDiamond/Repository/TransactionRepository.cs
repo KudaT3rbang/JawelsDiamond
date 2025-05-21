@@ -50,6 +50,15 @@ namespace JawelsDiamond.Repository
             }
         }
 
+        public static List<TransactionHeader> GetFinishedTransactions()
+        {
+            return db.TransactionHeaders
+                .Where(t => t.TransactionStatus == "Done")
+                .Include(th => th.TransactionDetails)
+                .Include(th => th.TransactionDetails.Select(td => td.MsJewel))
+                .ToList();
+        }
+
         public static List<TransactionHeader> GetUnfinishedTransactions()
         {
             return db.TransactionHeaders
